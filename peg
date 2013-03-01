@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+require './lib/numbers/scanner'
+require './lib/numbers/parser'
+require './lib/numbers/code_generator'
+
+tokens = Numbers::Scanner.scan(STDIN.read)
+# puts tokens
+ast = Numbers::Parser.new.parse(tokens)
+puts ast
