@@ -106,7 +106,7 @@ literal : SQSTRING
 leftarrow : ARROW spacing
 slash : SL spacing
 and : AMPER spacing
-not : EXLAMATION spacing
+not : EXCLAMATION spacing
 question : INTERR spacing
 star : STAR spacing
 plus : PLUS spacing
@@ -127,17 +127,20 @@ space : WHITE
 end
 
 ---- inner ----
+  @yydebug=true
   def parse(tokens)
     # @yydebug = true
     @tokens = tokens
     do_parse
   end
 
-  def on_error( *args )
-    $stderr.puts "on_error called: args=#{args.inspect}"
-  end
+  #def on_error( *args )
+  #  $stderr.puts "on_error called: args=#{args.inspect}"
+  #end
 
   def next_token
-    @tokens.shift
+    token = @tokens.shift
+    puts "Token: #{token.inspect}"
+    token
   end
 

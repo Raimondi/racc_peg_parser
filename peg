@@ -1,10 +1,10 @@
 #!/usr/bin/env ruby
 
 require './lib/peg/scanner'
-#require './lib/peg/parser'
+require './lib/peg/parser'
 #require './lib/peg/code_generator'
 
 tokens = Peg::Scanner.scan('peg.peg')
-#puts tokens
-#ast = Peg::Parser.new.parse(tokens)
+puts tokens.inspect
+ast = Peg::Parser.new.parse(tokens)
 #puts ast
