@@ -62,9 +62,9 @@ alternative : # Empty
             | alternative SLASH sequence
 
 sequence : # Empty
-         |  suffix
-         |  AND suffix
-         |  NOT suffix
+         |  sequence suffix
+         |  sequence AND suffix
+         |  sequence NOT suffix
 
 suffix : primary quantifier
 
