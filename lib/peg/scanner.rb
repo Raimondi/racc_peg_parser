@@ -10,16 +10,16 @@ module Peg
         #matches /[ \t]+/                   => :WHITE
         #matches /\r\n|\n|\r/            => :EOL
         #matches /#/                     => :HASH
-        matches /\./                    => :POINT
-        matches /\)/                    => :CLOSE_PAREN
-        matches /\(/                    => :OPEN_PAREN
+        matches /\./                    => :DOT
+        matches /\)/                    => :CLOSE
+        matches /\(/                    => :OPEN
         matches /\+/                    => :PLUS
         matches /\*/                    => :STAR
-        matches /\?/                    => :INTERR
-        matches /!/                     => :EXCLAMATION
-        matches /&/                     => :AMPER
-        matches /\//                    => :SL
-        matches /<-/                    => :ARROW
+        matches /\?/                    => :QUESTION
+        matches /!/                     => :NOT
+        matches /&/                     => :AND
+        matches /\//                    => :SLASH
+        matches /<-/                    => :LEFTARROW
         ignores /#.*$/                  => :COMM
         #matches /(?<!\\)./              => :NON_ESC
         #matches /\\[nrt'"\[\]\\]/       => :ESC
@@ -46,7 +46,7 @@ module Peg
       }
       # wrap as [id, value] tokens for racc
       # trailing   end   token recast as   END   for racc
-      tokens.map {|x| [x.type.upcase, x.value] }
+      tokens.map {|x| [x.type.upcase, x.value] } << [:END, nil]
     end
   end
 end

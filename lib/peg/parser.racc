@@ -53,66 +53,41 @@ rule
 
 grammar : definition END
 
-definition : identifier leftarrow expression
-           | definition identifier leftarrow expression
+definition : identifier LEFTARROW expression
+           | definition identifier LEFTARROW expression
 
 expression : sequence alternative
 
 alternative : # Empty
-            | alternative slash sequence
+            | alternative SLASH sequence
 
 sequence : # Empty
          |  suffix
-         |  and suffix
-         |  not suffix
+         |  AND suffix
+         |  NOT suffix
 
 suffix : primary quantifier
 
 quantifier : # Empty
-           | question
-           | star
-           | plus
+           | QUESTION
+           | STAR
+           | PLUS
 
 primary : identifier
-        | open expression close
+        | OPEN expression CLOSE
         | literal
         | CLASS
-        | dot
+        | DOT
 # lexical syntax
 
 identifier : IDENTSTART identcont
 
 identcont : # Empty
-          | identcont identstart
+          | identcont IDENTSTART
           | identcont NUMBER
 
 literal : SQSTRING
         | DQSTRING
-
-#literal : SQUOTE chars SQUOTE
-#        | DQUOTE chars DQUOTE
-#chars : # Empty
-#      | chars char
-#
-#class : OPEN_SQ range CLOSE_SQ
-#range : # Empty
-#      | range char DASH char
-#      | range char
-#
-#char : ESC
-#     | OCT
-#     | NON_ESC
-
-leftarrow : ARROW
-slash : SL
-and : AMPER
-not : EXCLAMATION
-question : INTERR
-star : STAR
-plus : PLUS
-open : OPEN_PAREN
-close : CLOSE_PAREN
-dot : POINT
 
 end
 
