@@ -44,7 +44,6 @@ module Peg
           tokens << token unless token.value.nil?
         end
       }
-      tokens << token
       # wrap as [id, value] tokens for racc
       # trailing   end   token recast as   END   for racc
       tokens.map {|x| [x.type.upcase, x.value] }
