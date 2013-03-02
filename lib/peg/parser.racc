@@ -51,7 +51,7 @@ rule
 #EndOfLine <- '\r\n' / '\n' / '\r'
 #EndOfFile <- !.
 
-grammar : definition endoffile
+grammar : definition END
 
 definition : identifier leftarrow expression
            | definition identifier leftarrow expression
