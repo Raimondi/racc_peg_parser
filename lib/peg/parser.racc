@@ -51,7 +51,7 @@ rule
 #EndOfLine <- '\r\n' / '\n' / '\r'
 #EndOfFile <- !.
 
-grammar : spacing definition endoffile
+grammar : definition endoffile
 
 definition : identifier leftarrow expression
            | definition identifier leftarrow expression
@@ -80,7 +80,7 @@ primary : identifier
         | dot
 # lexical syntax
 
-identifier : IDENTSTART identcont spacing
+identifier : IDENTSTART identcont
 
 identcont : # Empty
           | identcont identstart
@@ -89,12 +89,12 @@ identcont : # Empty
 literal : SQSTRING
         | DQSTRING
 
-#literal : SQUOTE chars SQUOTE spacing
-#        | DQUOTE chars DQUOTE spacing
+#literal : SQUOTE chars SQUOTE
+#        | DQUOTE chars DQUOTE
 #chars : # Empty
 #      | chars char
 #
-#class : OPEN_SQ range CLOSE_SQ spacing
+#class : OPEN_SQ range CLOSE_SQ
 #range : # Empty
 #      | range char DASH char
 #      | range char
@@ -103,26 +103,16 @@ literal : SQSTRING
 #     | OCT
 #     | NON_ESC
 
-leftarrow : ARROW spacing
-slash : SL spacing
-and : AMPER spacing
-not : EXCLAMATION spacing
-question : INTERR spacing
-star : STAR spacing
-plus : PLUS spacing
-open : OPEN_PAREN spacing
-close : CLOSE_PAREN spacing
-dot : POINT spacing
-
-spacing : # Empty
-        | spacing space
-        | spacing comment
-
-comment : COMM EOL
-space : WHITE
-      | EOL
-
-
+leftarrow : ARROW
+slash : SL
+and : AMPER
+not : EXCLAMATION
+question : INTERR
+star : STAR
+plus : PLUS
+open : OPEN_PAREN
+close : CLOSE_PAREN
+dot : POINT
 
 end
 
