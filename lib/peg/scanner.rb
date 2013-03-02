@@ -6,12 +6,41 @@ module Peg
     def self.scan(source)
       tokens = []
       expr = Lexr.that {
-        matches /\s+/        => :WHITESPACE
+        matches /\s+/                   => :WHITE
+        matches /\r\n|\n|\r/            => :EOL
+        matches /#/                     => :HASH
+        matches /\./                    => :POINT
+        matches /\)/                    => :CLOSE_PAREN
+        matches /\(/                    => :OPEN_PAREN
+        matches /\+/                    => :PLUS
+        matches /\*/                    => :STAR
+        matches /\?/                    => :INTERR
+        matches /!/                     => :EXCLAMATION
+        matches /&/                     => :AMPER
+        matches /\//                    => :SL
+        matches /<-/                    => :ARROW
+        matches /#.*$/                  => :COMM
+        matches /(?<!\\)./              => :NON_ESC
+        matches /\\[nrt'"\[\]\\]/       => :ESC
+        matches /\\([0-2]?[0-7])?[0-7]/ => :OCT
+        matches /-/                     => :DASH
+        matches /\[/                    => :OPEN_SQ
+        matches /\]/                    => :CLOSE_SQ
+        matches /'/                     => :SQUOTE
+        matches /"/                     => :DQUOTE
+        matches /\d/                    => :NUMBER
+        matches /[a-zA-Z]/              => :IDENTSTART
+
       }
-      lexer = expr.new(source)
-      until lexer.end?
-        tokens << lexer.next
-      end
+      file = File.open(source)
+      file.each {|line|
+        lexer = expr.new(line)
+        until lexer.end?
+          token = lexer.next
+          puts token.inspect
+          tokens << token
+        end
+      }
       # wrap as [id, value] tokens for racc
       # trailing   end   token recast as   END   for racc
       tokens.map {|x| [x.type.upcase, x.value] }
