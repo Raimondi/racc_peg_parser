@@ -24,32 +24,102 @@ rule
 #
 #IdentCont <- IdentStart / [0-9]
 #
-#Literal <- [’] (![’] Char)* [’] Spacing / ["] (!["] Char)* ["] Spacing
+#Literal <- ['] (!['] Char)* ['] Spacing / ["] (!["] Char)* ["] Spacing
 #
-#Class <- ’[’ (!’]’ Range)* ’]’ Spacing
-#Range <- Char ’-’ Char / Char
+#Class <- '[' (!']' Range)* ']' Spacing
+#Range <- Char '-' Char / Char
 #
-#Char <- ’\\’ [nrt’"\[\]\\]
-#/ ’\\’ [0-2][0-7][0-7] / ’\\’ [0-7][0-7]?
-#/ !’\\’ .
+#Char <- '\\' [nrt'"\[\]\\]
+#/ '\\' [0-2][0-7][0-7] / '\\' [0-7][0-7]?
+#/ !'\\' .
 #
-#LEFTARROW <- ’<-’ Spacing
-#SLASH <- ’/’ Spacing
-#AND <- ’&’ Spacing
-#NOT <- ’!’ Spacing
-#QUESTION <- ’?’ Spacing
-#STAR <- ’*’ Spacing
-#PLUS <- ’+’ Spacing
-#OPEN <- ’(’ Spacing
-#CLOSE <- ’)’ Spacing
-#DOT <- ’.’ Spacing
+#LEFTARROW <- '<-' Spacing
+#SLASH <- '/' Spacing
+#AND <- '&' Spacing
+#NOT <- '!' Spacing
+#QUESTION <- '?' Spacing
+#STAR <- '*' Spacing
+#PLUS <- '+' Spacing
+#OPEN <- '(' Spacing
+#CLOSE <- ')' Spacing
+#DOT <- '.' Spacing
 #
 #Spacing <- (Space / Comment)*
 #
-#Comment <- ’#’ (!EndOfLine .)* EndOfLine
-#Space <- ’ ’ / ’\t’ / EndOfLine
-#EndOfLine <- ’\r\n’ / ’\n’ / ’\r’
+#Comment <- '#' (!EndOfLine .)* EndOfLine
+#Space <- ' ' / '\t' / EndOfLine
+#EndOfLine <- '\r\n' / '\n' / '\r'
 #EndOfFile <- !.
+
+grammar : spacing definition endoffile
+
+definition : identifier leftarrow expression
+           | definition identifier leftarrow expression
+
+expression : sequence alternative
+
+alternative : # Empty
+            | alternative slash sequence
+
+sequence : # Empty
+         |  suffix
+         |  and suffix
+         |  not suffix
+
+suffix : primary quantifier
+
+quantifier : # Empty
+           | question
+           | star
+           | plus
+
+primary : identifier
+        | open expression close
+        | literal
+        | class
+        | dot
+# lexical syntax
+
+identifier : IDENTSTART identcont spacing
+
+identcont : # Empty
+          | identcont identstart
+          | identcont NUMBER
+
+literal : SQUOTE chars SQUOTE spacing
+        | DQUOTE chars DQUOTE spacing
+chars : # Empty
+      | chars char
+
+class : OPEN_SQ range CLOSE_SQ spacing
+range : # Empty
+      | range char DASH char
+      | range char
+
+char : ESC
+     | OCT
+     | NON_ESC
+
+leftarrow : ARROW spacing
+slash : SL spacing
+and : AMPER spacing
+not : EXLAMATION spacing
+question : INTERR spacing
+star : STAR spacing
+plus : PLUS spacing
+open : OPEN_PAREN spacing
+close : CLOSE_PAREN spacing
+dot : POINT spacing
+
+spacing : # Empty
+        | spacing space
+        | spacing comment
+
+comment : COMM EOL
+space : WHITE
+      | EOL
+
+
 
 end
 
