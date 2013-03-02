@@ -35,8 +35,7 @@ module Peg
         matches /[a-zA-Z]+/             => :IDENTSTART
 
       }
-      file = File.open(source)
-      file.each {|line|
+      source.each_line {|line|
         lexer = expr.new(line)
         until lexer.end?
           token = lexer.next

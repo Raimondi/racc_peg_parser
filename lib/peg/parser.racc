@@ -129,7 +129,7 @@ end
 ---- inner ----
   @yydebug=true
   def parse(tokens)
-    # @yydebug = true
+    @yydebug = true
     @tokens = tokens
     do_parse
   end
