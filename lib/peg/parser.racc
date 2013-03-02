@@ -76,7 +76,7 @@ quantifier : # Empty
 primary : identifier
         | open expression close
         | literal
-        | class
+        | CLASS
         | dot
 # lexical syntax
 
@@ -86,19 +86,22 @@ identcont : # Empty
           | identcont identstart
           | identcont NUMBER
 
-literal : SQUOTE chars SQUOTE spacing
-        | DQUOTE chars DQUOTE spacing
-chars : # Empty
-      | chars char
+literal : SQSTRING
+        | DQSTRING
 
-class : OPEN_SQ range CLOSE_SQ spacing
-range : # Empty
-      | range char DASH char
-      | range char
-
-char : ESC
-     | OCT
-     | NON_ESC
+#literal : SQUOTE chars SQUOTE spacing
+#        | DQUOTE chars DQUOTE spacing
+#chars : # Empty
+#      | chars char
+#
+#class : OPEN_SQ range CLOSE_SQ spacing
+#range : # Empty
+#      | range char DASH char
+#      | range char
+#
+#char : ESC
+#     | OCT
+#     | NON_ESC
 
 leftarrow : ARROW spacing
 slash : SL spacing

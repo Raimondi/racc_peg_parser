@@ -6,7 +6,7 @@ module Peg
     def self.scan(source)
       tokens = []
       expr = Lexr.that {
-        matches /\s+/                   => :WHITE
+        matches /[ \t]+/                   => :WHITE
         matches /\r\n|\n|\r/            => :EOL
         matches /#/                     => :HASH
         matches /\./                    => :POINT
@@ -19,15 +19,18 @@ module Peg
         matches /&/                     => :AMPER
         matches /\//                    => :SL
         matches /<-/                    => :ARROW
-        matches /#.*$/                  => :COMM
-        matches /(?<!\\)./              => :NON_ESC
-        matches /\\[nrt'"\[\]\\]/       => :ESC
-        matches /\\([0-2]?[0-7])?[0-7]/ => :OCT
-        matches /-/                     => :DASH
-        matches /\[/                    => :OPEN_SQ
-        matches /\]/                    => :CLOSE_SQ
-        matches /'/                     => :SQUOTE
-        matches /"/                     => :DQUOTE
+        #matches /#.*$/                  => :COMM
+        #matches /(?<!\\)./              => :NON_ESC
+        #matches /\\[nrt'"\[\]\\]/       => :ESC
+        #matches /\\([0-2]?[0-7])?[0-7]/ => :OCT
+        #matches /-/                     => :DASH
+        #matches /\[/                    => :OPEN_SQ
+        #matches /\]/                    => :CLOSE_SQ
+        #matches /'/                     => :SQUOTE
+        #matches /"/                     => :DQUOTE
+        matches /\[(\\.|[^\]])*\]/      => :CLASS
+        matches /"(\\.|[^"])*"/         => :DQSTRING
+        matches /'(\\.|[^'])*'/         => :SQSTRING
         matches /\d/                    => :NUMBER
         matches /[a-zA-Z]/              => :IDENTSTART
 

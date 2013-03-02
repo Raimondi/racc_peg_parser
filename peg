@@ -1,10 +1,10 @@
 #!/usr/bin/env ruby
 
-require './lib/numbers/scanner'
-require './lib/numbers/parser'
-require './lib/numbers/code_generator'
+require './lib/peg/scanner'
+#require './lib/peg/parser'
+#require './lib/peg/code_generator'
 
-tokens = Numbers::Scanner.scan(STDIN.read)
-# puts tokens
-ast = Numbers::Parser.new.parse(tokens)
-puts ast
+tokens = Peg::Scanner.scan('peg.peg')
+#puts tokens
+#ast = Peg::Parser.new.parse(tokens)
+#puts ast
