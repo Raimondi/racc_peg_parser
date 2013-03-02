@@ -6,9 +6,9 @@ module Peg
     def self.scan(source)
       tokens = []
       expr = Lexr.that {
+        matches /\r\n|\n|\r/            => :EOL
         ignores /\s+/ => :WHITE
         #matches /[ \t]+/                   => :WHITE
-        #matches /\r\n|\n|\r/            => :EOL
         #matches /#/                     => :HASH
         matches /\./                    => :DOT
         matches /\)/                    => :CLOSE

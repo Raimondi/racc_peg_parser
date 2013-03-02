@@ -53,18 +53,25 @@ rule
 
 grammar : definition END
 
-definition : identifier LEFTARROW expression
-           | definition identifier LEFTARROW expression
+definition : defi
+           | definition defi
+
+white      :
+           | white EOL
+
+defi       : white identifier LEFTARROW expression EOL
 
 expression : sequence alternative
 
 alternative : # Empty
             | alternative SLASH sequence
 
-sequence : # Empty
-         |  sequence suffix
-         |  sequence AND suffix
-         |  sequence NOT suffix
+sequence :  seq
+         |  sequence seq
+
+seq      :  suffix
+         |  AND suffix
+         |  NOT suffix
 
 suffix : primary quantifier
 
