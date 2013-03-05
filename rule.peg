@@ -1,2 +1,3 @@
-Grammar <- Spacing Definition+ EndOfFile
+Grammar <- Spacing Definition+
+           EndOfFile
 

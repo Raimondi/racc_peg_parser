@@ -4,4 +4,5 @@ lib/peg/parser.rb: lib/peg/parser.racc
 	racc -t -v -o lib/peg/parser.rb lib/peg/parser.racc
 
 test: lib/peg/parser.rb
-	./peg
+	./peg < rule.peg
+	./peg < rule2.peg

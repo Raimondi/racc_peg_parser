@@ -32,6 +32,7 @@ module Peg
         matches /\[(\\.|[^\]])*\]/      => :CLASS
         matches /"(\\.|[^"])*"/         => :DQSTRING
         matches /'(\\.|[^'])*'/         => :SQSTRING
+        matches /[a-zA-Z][a-zA-Z0-9]*/  => :IDENTIFIER
         matches /\d/                    => :NUMBER
         matches /[a-zA-Z]+/             => :IDENTSTART
 
