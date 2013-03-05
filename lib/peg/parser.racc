@@ -1,50 +1,32 @@
 # vim:set ft=ruby:
 class Peg::Parser
 
-# prechigh
-#   right definition
-# preclow
 rule
 
-grammar     : eol definitions END
+grammar     : definitions END
 definitions : definition
             | definitions definition   {result = val}
-definition  : RULE expression   {result = val}
+definition  : RULE expression          {result = val}
 expression  : sequence
             | expression alternative   {result = val}
-alternative : slash sequence   {result = val}
+alternative : SLASH sequence           {result = val}
 sequence    : # Empty
             | sequence prefix suffix   {result = val}
-            | sequence suffix   {result = val}
-prefix      : and
-            | not
-suffix      : primary quantifier   {result = val}
+            | sequence suffix          {result = val}
+prefix      : AND
+            | NOT
+suffix      : primary quantifier       {result = val}
             | primary
-quantifier  : question
-            | star
-            | plus
-primary     : identifier
-            | open expression close   {result = val}
+quantifier  : QUESTION
+            | STAR
+            | PLUS
+primary     : IDENTIFIER
+            | OPEN expression CLOSE    {result = val}
             | literal
-            | class
-            | dot
-# lexical syntax
-identifier : IDENTIFIER eol
-class      : CLASS eol
-literal    : SQSTRING eol
-           | DQSTRING eol
-leftarrow  : LEFTARROW  eol
-slash      : SLASH eol
-and        : AND eol
-not        : NOT eol
-question   : QUESTION eol
-star       : STAR eol
-plus       : PLUS eol
-open       : OPEN eol
-close      : CLOSE eol
-dot        : DOT eol
-eol        : # Empty
-           | eol EOL
+            | CLASS
+            | DOT
+literal     : SQSTRING
+            | DQSTRING
 end
 
 ---- inner ----
@@ -55,13 +37,7 @@ end
     do_parse
   end
 
-  #def on_error( *args )
-  #  $stderr.puts "on_error called: args=#{args.inspect}"
-  #end
-
   def next_token
     token = @tokens.shift
-    #puts "Token: #{token.inspect}"
     token
   end
-
