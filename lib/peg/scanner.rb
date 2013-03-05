@@ -6,8 +6,9 @@ module Peg
     def self.scan(source)
       tokens = []
       expr = Lexr.that {
+        ident = /[a-zA-Z][a-zA-Z0-9]*/
         matches /\r\n|\n|\r/            => :EOL
-        ignores /\s+/ => :WHITE
+        ignores /\s+/                   => :WHITE
         #matches /[ \t]+/                   => :WHITE
         #matches /#/                     => :HASH
         matches /\./                    => :DOT
@@ -19,7 +20,7 @@ module Peg
         matches /!/                     => :NOT
         matches /&/                     => :AND
         matches /\//                    => :SLASH
-        matches /<-/                    => :LEFTARROW
+        matches /#{ident}\s*<-/         => :RULE
         ignores /#.*$/                  => :COMM
         #matches /(?<!\\)./              => :NON_ESC
         #matches /\\[nrt'"\[\]\\]/       => :ESC
@@ -32,10 +33,8 @@ module Peg
         matches /\[(\\.|[^\]])*\]/      => :CLASS
         matches /"(\\.|[^"])*"/         => :DQSTRING
         matches /'(\\.|[^'])*'/         => :SQSTRING
-        matches /[a-zA-Z][a-zA-Z0-9]*/  => :IDENTIFIER
+        matches ident                   => :IDENTIFIER
         matches /\d/                    => :NUMBER
-        matches /[a-zA-Z]+/             => :IDENTSTART
-
       }
       source.each_line {|line|
         lexer = expr.new(line)
