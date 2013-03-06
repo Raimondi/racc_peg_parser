@@ -1,12 +1,9 @@
 # vim:set ft=ruby:
 class Peg::Parser
 
-# prechigh
-#   right definition
-# preclow
 rule
 
-grammar     : eol definitions END
+grammar     : definitions END
 definitions : definition
             | definitions definition   {result = val}
 definition  : RULE expression   {result = val}
@@ -29,26 +26,23 @@ primary     : identifier
             | class
             | dot
 # lexical syntax
-identifier : IDENTIFIER eol
-class      : CLASS eol
-literal    : SQSTRING eol
-           | DQSTRING eol
-leftarrow  : LEFTARROW  eol
-slash      : SLASH eol
-and        : AND eol
-not        : NOT eol
-question   : QUESTION eol
-star       : STAR eol
-plus       : PLUS eol
-open       : OPEN eol
-close      : CLOSE eol
-dot        : DOT eol
-eol        : # Empty
-           | eol EOL
+identifier : IDENTIFIER
+class      : CLASS
+literal    : SQSTRING
+           | DQSTRING
+slash      : SLASH
+and        : AND
+not        : NOT
+question   : QUESTION
+star       : STAR
+plus       : PLUS
+open       : OPEN
+close      : CLOSE
+dot        : DOT
+
 end
 
 ---- inner ----
-  @yydebug=true
   def parse(tokens)
     @yydebug = true
     @tokens = tokens
