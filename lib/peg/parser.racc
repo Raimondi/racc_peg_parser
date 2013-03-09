@@ -3,7 +3,7 @@ class Peg::Parser
 
 rule
 
-grammar     : definitions END
+grammar     : definitions
 definitions : definition
             | definitions definition   {result = val}
 definition  : RULE expression   {result = val}
@@ -27,7 +27,12 @@ primary     : identifier
             | dot
 # lexical syntax
 identifier : IDENTIFIER
-class      : CLASS
+class      : STARTSCC classinner ENDSCC {result = val.join}
+classinner : classitem
+           | classinner classitem
+classitem  : CCCHAR
+           | CCESCAPED
+           | CCOCTAL
 literal    : SQSTRING
            | DQSTRING
 slash      : SLASH
@@ -44,9 +49,9 @@ end
 
 #---- inner ----
   #def parse(tokens)
-  #  @yydebug = true
-  #  @tokens = tokens
-  #  do_parse
+    #@yydebug = true
+    #@tokens = tokens
+    #do_parse
   #end
 
   #def on_error( *args )

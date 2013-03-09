@@ -6,7 +6,7 @@
 
 require 'racc/parser'
 module Peg
-class Scanner < Racc::Parser
+class Parser < Racc::Parser
   require 'strscan'
 
   class ScanError < StandardError ; end
@@ -89,10 +89,10 @@ class Scanner < Racc::Parser
          action { [:RULE, text] }
 
       when (text = @ss.scan(/\#.*$/))
-         action { [:COMM, text] }
+        ;
 
-      when (text = @ss.scan(/\[(\\.|[^\]])*\]/))
-         action { [:CLASS, text] }
+      when (text = @ss.scan(/\[/))
+         action { @state = :CC; [:STARTSCC, text] }
 
       when (text = @ss.scan(/"(\\.|[^"])*"/))
          action { [:DQSTRING, text] }
@@ -107,7 +107,26 @@ class Scanner < Racc::Parser
          action { [:NUMBER, text] }
 
       when (text = @ss.scan(/\s+/))
-         action { [:WHITE, text] }
+        ;
+
+      else
+        text = @ss.string[@ss.pos .. -1]
+        raise  ScanError, "can not match: '" + text + "'"
+      end  # if
+
+    when :CC
+      case
+      when (text = @ss.scan(/\]/))
+         action { @state = nil; [:ENDSCC, text] }
+
+      when (text = @ss.scan(/\\[nrt'"\[\]\\]/))
+         action { [:CCESCAPED, text] }
+
+      when (text = @ss.scan(/\\([0-2]?[0-7])?[0-7]/))
+         action { [:CCOCTAL, text] }
+
+      when (text = @ss.scan(/./))
+         action { [:CCCHAR, text] }
 
       else
         text = @ss.string[@ss.pos .. -1]
@@ -117,6 +136,7 @@ class Scanner < Racc::Parser
     else
       raise  ScanError, "undefined state: '" + state.to_s + "'"
     end  # case state
+    p token
     token
   end  # def _next_token
 
