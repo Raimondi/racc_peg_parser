@@ -4,7 +4,7 @@ require './lib/peg/scanner'
 require './lib/peg/parser'
 #require './lib/peg/code_generator'
 
-tokens = Peg::Scanner.scan(STDIN.read)
-puts tokens.inspect
-ast = Peg::Parser.new.parse(tokens)
-#puts ast
+#tokens = Peg::Scanner.scan(STDIN.read)
+#puts tokens.inspect
+parser = Peg::Parser.new
+puts parser.scan_str STDIN.read

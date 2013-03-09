@@ -1,9 +1,13 @@
-all: lib/peg/parser.rb
+.PHONY: all test
+all: lib/peg/parser.rb lib/peg/scanner.rb
+
+lib/peg/scanner.rb: lib/peg/scanner.rex
+	rex -o lib/peg/scanner.rb lib/peg/scanner.rex
 
 lib/peg/parser.rb: lib/peg/parser.racc
 	racc -t -v -o lib/peg/parser.rb lib/peg/parser.racc
 
-test: lib/peg/parser.rb
+test: all
 	./peg < rule.peg
 	./peg < rule2.peg
 	./peg < peg.peg
